@@ -202,6 +202,7 @@ public class TupleDesc implements Serializable {
             TDItem next = ite1.next();
             types[i] = next.fieldType;
             names[i] = next.fieldName;
+            i++;
         }
 
         Iterator<TDItem> it2 = td2.iterator();
@@ -209,6 +210,7 @@ public class TupleDesc implements Serializable {
             TDItem next = it2.next();
             types[i] = next.fieldType;
             names[i] = next.fieldName;
+            i++;
         }
         return new TupleDesc(types, names);
     }
