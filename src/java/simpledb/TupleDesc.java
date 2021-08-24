@@ -230,6 +230,9 @@ public class TupleDesc implements Serializable {
         if (o == null) {
             return false;
         }
+        if (this == o) {
+            return true;
+        }
         if (o instanceof TupleDesc) {
             TupleDesc tupleDesc = (TupleDesc) o;
             if (this.tdItems.length == tupleDesc.tdItems.length) {
