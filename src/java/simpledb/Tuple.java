@@ -61,14 +61,7 @@ public class Tuple implements Serializable {
      * @param f new value for the field.
      */
     public void setField(int i, Field f) {
-        if (f == null) {
-            throw new IllegalArgumentException("");
-        }
-        Type fieldType = td.getFieldType(i);
-        Type type = f.getType();
-        if (fieldType == type) {
-            fields[i] = f;
-        }
+        fields[i] = f;
     }
 
     /**
@@ -92,8 +85,19 @@ public class Tuple implements Serializable {
      */
     @Override
     public String toString() {
-        // some code goes here
-        throw new UnsupportedOperationException("Implement this");
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < fields.length; i++) {
+            sb.append(fields[i].toString());
+            if (i < fields.length - 1) {
+                sb.append(",");
+            }
+        }
+        return sb.toString();
+    }
+
+
+    public Field[] getFields() {
+        return fields;
     }
 
     /**

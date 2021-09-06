@@ -8,3 +8,6 @@ log
 out/
 .*iml
 /*.iml
+*.dat
+*.txt
+*.bz2

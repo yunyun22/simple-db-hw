@@ -318,7 +318,7 @@ public class HeapPage implements Page {
      * (note that this iterator shouldn't return tuples in empty slots!)
      */
     public Iterator<Tuple> iterator() {
-        return new Iterator<Tuple>() {
+        return new Iterator<>() {
             int i = 0;
             final int length = tuples.length - getNumEmptySlots();
 

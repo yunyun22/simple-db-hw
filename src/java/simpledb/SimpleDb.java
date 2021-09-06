@@ -4,6 +4,7 @@ import java.io.*;
 public class SimpleDb {
     public static void main (String args[])
             throws DbException, TransactionAbortedException, IOException {
+        args = new String[]{"convert","some_data_file.txt","3"};
         // convert a file
         if(args[0].equals("convert")) {
         try {
