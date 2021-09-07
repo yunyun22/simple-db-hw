@@ -2,6 +2,7 @@ package simpledb;
 
 import java.io.*;
 
+import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -33,9 +34,9 @@ public class BufferPool {
     public static final int DEFAULT_PAGES = 50;
 
 
-    private ConcurrentHashMap<PageId, Page> pages;
+    private final ConcurrentHashMap<PageId, Page> pages;
 
-    private ReadWriteLock readWriteLock;
+    private final ReadWriteLock readWriteLock;
 
     /**
      * Creates a BufferPool that caches up to numPages pages.
@@ -155,9 +156,18 @@ public class BufferPool {
      * @param t       the tuple to add
      */
     public void insertTuple(TransactionId tid, int tableId, Tuple t)
-            throws DbException, IOException, TransactionAbortedException {
-        // some code goes here
-        // not necessary for lab1
+            throws DbException, TransactionAbortedException {
+        DbFile databaseFile = Database.getCatalog().getDatabaseFile(tableId);
+        ArrayList<Page> pages;
+        try {
+            pages = databaseFile.insertTuple(tid, t);
+        } catch (IOException e) {
+            throw new DbException("");
+        }
+        for (Page page : pages) {
+            this.pages.putIfAbsent(page.getId(), page);
+            page.markDirty(true, tid);
+        }
     }
 
     /**
@@ -174,9 +184,18 @@ public class BufferPool {
      * @param t   the tuple to delete
      */
     public void deleteTuple(TransactionId tid, Tuple t)
-            throws DbException, IOException, TransactionAbortedException {
-        // some code goes here
-        // not necessary for lab1
+            throws DbException, TransactionAbortedException {
+        DbFile databaseFile = Database.getCatalog().getDatabaseFile(t.getRecordId().getPageId().getTableId());
+        ArrayList<Page> pages = null;
+        try {
+            pages = databaseFile.deleteTuple(tid, t);
+        } catch (IOException e) {
+            throw new DbException("");
+        }
+        for (Page page : pages) {
+            this.pages.putIfAbsent(page.getId(), page);
+            page.markDirty(true, tid);
+        }
     }
 
     /**

@@ -16,8 +16,10 @@ public class Tuple implements Serializable {
 
     private final Field[] fields;
 
-    private final TupleDesc td;
+    private  TupleDesc td;
 
+
+    private RecordId recordId;
     /**
      * Create a new tuple with the specified schema (type).
      *
@@ -42,7 +44,7 @@ public class Tuple implements Serializable {
      */
     public RecordId getRecordId() {
         // some code goes here
-        return null;
+        return this.recordId;
     }
 
     /**
@@ -51,7 +53,7 @@ public class Tuple implements Serializable {
      * @param rid the new RecordId for this tuple.
      */
     public void setRecordId(RecordId rid) {
-        // some code goes here
+       this.recordId  = rid;
     }
 
     /**
@@ -104,14 +106,24 @@ public class Tuple implements Serializable {
      * @return An iterator which iterates over all the fields of this tuple
      */
     public Iterator<Field> fields() {
-        // some code goes here
-        return null;
+        return new Iterator<>() {
+            int i = 0;
+            @Override
+            public boolean hasNext() {
+                return i < fields.length;
+            }
+
+            @Override
+            public Field next() {
+                return fields[i++];
+            }
+        };
     }
 
     /**
      * reset the TupleDesc of this tuple (only affecting the TupleDesc)
      */
     public void resetTupleDesc(TupleDesc td) {
-        // some code goes here
+        this.td = td;
     }
 }

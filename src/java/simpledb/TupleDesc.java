@@ -267,7 +267,18 @@ public class TupleDesc implements Serializable {
      */
     @Override
     public String toString() {
-        // some code goes here
-        return "";
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < tdItems.length; i++) {
+            sb.append(tdItems[i].fieldType.toString())
+                    .append("[")
+                    .append(i)
+                    .append("](")
+                    .append(tdItems[i].fieldName)
+                    .append("[")
+                    .append(i)
+                    .append("]")
+                    .append(")");
+        }
+        return sb.toString();
     }
 }
